@@ -49,15 +49,11 @@ yield_anomaly_sens = input_coef_t2 %>% map(~almond_anomaly(climate_df, coef_t1=-
 
 head(yield_anomaly_sens)
 
-#
+#convert yield anomaly sens from a bunch of lists to a data frame
+yas_df = map_df(yield_anomaly_sens,`[`, c("year","yield"))
 
-# this is pretty messy - but we can extract a useful data structure,lets say we want # just the annual data (not the mean), and then reformat as a data frame with nice column names
-tmp = map_df(yield_anomaly_sens,`[`, c("annual")) 
-site2df = data.frame(year = tmp$annual$year, elect= tmp$annual$elect)
-# now we could plot
-ggplot(site2df, aes(year,elect, group=year ))+geom_boxplot()
-
-
+# plot
+ggplot(yas_df, aes(year,yield, group=year))+geom_boxplot()
 
 
 ```
