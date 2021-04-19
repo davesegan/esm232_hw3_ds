@@ -33,19 +33,19 @@ almond_anomaly
 climate_df <- read.delim(here('clim.txt'), sep = " ")
 
 # run the model
-almond_anomaly(climate_df, coef_t1=-0.015, coef_t2=0.0043, coef_p1=-0.07, coef_p2=0.0043, intercept=0.28)
+almond_anomaly(climate_df, coef_t1=-0.015, coef_t2=-0.0043, coef_p1=-0.07, coef_p2=0.0043, intercept=0.28)
 
 # results
 yield_anomaly = almond_anomaly(climate_df, coef_t1=-0.015, coef_t2=0.0043, coef_p1=-0.07, coef_p2=0.0043, intercept=0.28)
 
 # sensitivity analysis 
 
-# normal distribution of parameter 2
-input_coef_t2 = rnorm(mean=0.0043, sd = 0.001, n=500)
+# normal distribution of 0.0043P^2 parameter
+input_coef_p2 = rnorm(mean=0.0043, sd = 0.001, n=500)
 
 # apply 500 different par 2 values to function 
 # result is 500 lists. each has two columns (year and yield anomalies) and 22 rows
-yield_anomaly_sens = input_coef_t2 %>% map(~almond_anomaly(climate_df, coef_t1=-0.015, coef_t2=.x, coef_p1=-0.07, coef_p2=0.0043, intercept=0.28))
+yield_anomaly_sens = input_coef_p2 %>% map(~almond_anomaly(climate_df, coef_t1=-0.015, coef_t2=-0.0043, coef_p1=-0.07, coef_p2=.x, intercept=0.28))
 
 head(yield_anomaly_sens)
 
